@@ -1,0 +1,1812 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "whitesource/configure" ]
+  pull_request:
+    branches: [ "whitesource/configure" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+- name: Docker image exists
+  # You may pin to the exact commit or the version.
+  # uses: cloudposse/github-action-docker-image-exists@3a691104a3d105aecb95e17e8ac5f21d271e53be
+  uses: cloudposse/github-action-docker-image-exists@0.1.2
+  with:
+    # Organization
+    organization: 
+    # Repository
+    repository: 
+    # Docker registry
+    registry: 
+    # Image name (excluding registry). Defaults to {{$organization/$repository}}.
+    image_name: # optional, default is 
+    # Tag
+    tag: 
+    # Docker login
+    login: # optional, default is 
+    # Docker password
+    password: # optional, default is 
+    - name: Build and push Docker images
+  # You may pin to the exact commit or the version.
+  # uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825
+  uses: docker/build-push-action@v4.1.1
+  with:
+    # List of a customs host-to-IP mapping (e.g., docker:10.180.0.1)
+    add-hosts: # optional
+    # List of extra privileged entitlement (e.g., network.host,security.insecure)
+    allow: # optional
+    # List of attestation parameters (e.g., type=sbom,generator=image)
+    attests: # optional
+    # List of build-time variables
+    build-args: # optional
+    # List of additional build contexts (e.g., name=path)
+    build-contexts: # optional
+    # Builder instance
+    builder: # optional
+    # List of external cache sources for buildx (e.g., user/app:cache, type=local,src=path/to/dir)
+    cache-from: # optional
+    # List of cache export destinations for buildx (e.g., user/app:cache, type=local,dest=path/to/dir)
+    cache-to: # optional
+    # Optional parent cgroup for the container used in the build
+    cgroup-parent: # optional
+    # Build's context is the set of files located in the specified PATH or URL
+    context: # optional
+    # Path to the Dockerfile
+    file: # optional
+    # List of metadata for an image
+    labels: # optional
+    # Load is a shorthand for --output=type=docker
+    load: # optional, default is false
+    # Set the networking mode for the RUN instructions during build
+    network: # optional
+    # Do not use cache when building the image
+    no-cache: # optional, default is false
+    # Do not cache specified stages
+    no-cache-filters: # optional
+    # List of output destinations (format: type=local,dest=path)
+    outputs: # optional
+    # List of target platforms for build
+    platforms: # optional
+    # Generate provenance attestation for the build (shorthand for --attest=type=provenance)
+    provenance: # optional
+    # Always attempt to pull all referenced images
+    pull: # optional, default is false
+    # Push is a shorthand for --output=type=registry
+    push: # optional, default is false
+    # Generate SBOM attestation for the build (shorthand for --attest=type=sbom)
+    sbom: # optional
+    # List of secrets to expose to the build (e.g., key=string, GIT_AUTH_TOKEN=mytoken)
+    secrets: # optional
+    # List of secret files to expose to the build (e.g., key=filename, MY_SECRET=./secret.txt)
+    secret-files: # optional
+    # Size of /dev/shm (e.g., 2g)
+    shm-size: # optional
+    # List of SSH agent socket or keys to expose to the build
+    ssh: # optional
+    # List of tags
+    tags: # optional
+    # Sets the target stage to build
+    target: # optional
+    # Ulimit options (e.g., nofile=1024:1024)
+    ulimit: # optional
+    # GitHub Token used to authenticate against a repository for Git context
+    github-token: # optional, default is ${{ github.token }}
+    - name: Postgres Docker image with "baked-in" data
+  # You may pin to the exact commit or the version.
+  # uses: snaplet/publish-postgres-with-data-docker-action@6b93fedc6f8152823fda26d1fe10330ae94299d1
+  uses: snaplet/publish-postgres-with-data-docker-action@v1.0.0
+  with:
+    # Name of docker database container
+    docker-container-name: 
+    # Tag for docker image
+    docker-image-tag: 
+    # Connection string to restore a snapshot
+    snaplet-database-url: 
+    # Command used to restore a snapshot
+    snaplet-restore-command: # optional, default is snaplet snapshot restore --latest
+    - name: Docker image serialization
+  # You may pin to the exact commit or the version.
+  # uses: pinguet62/docker-image-serialization@4acdac7f5dddb30a24042a52f130a10dfd817967
+  uses: pinguet62/docker-image-serialization@v1.0.0
+  with:
+    # Images to serialize
+    serialize: # optional
+    # Restore all Docker images
+    restore: # optional
+    - name: docker-image-context-hash
+  # You may pin to the exact commit or the version.
+  # uses: 5monkeys/docker-image-context-hash-action@20d487664e475bf6982f8a4e2e5c72ecdae05772
+  uses: 5monkeys/docker-image-context-hash-action@v1
+  with:
+    # What path to give to docker as build context
+    build_context: # optional, default is .
+    # Tree objects (files) to be included in addition to the docker image context
+    extra_tree_objects: # optional
+    - name: Retag Docker Image
+  # You may pin to the exact commit or the version.
+  # uses: koraykoska/retag-docker-image@b037500f6203edac09b2bcc6aa6f755cd4f66382
+  uses: koraykoska/retag-docker-image@0.2.4
+  with:
+    # The registry to push the new tag later
+    registry: 
+    # The name of the image you would like to retag
+    name: 
+    # The old tag of the image you would like to retag
+    old_tag: 
+    # The new tag of the image you would like to retag
+    new_tag: 
+    # The login username for the registry
+    username: # optional
+    # The login password for the registry
+    password: # optional
+    - name: Docker Latest Image
+  # You may pin to the exact commit or the version.
+  # uses: shrink/actions-docker-latest-image@bcfed80d66632a972ef576f20143904e8b704849
+  uses: shrink/actions-docker-latest-image@v1
+  with:
+    # Docker Image Repository
+    repository: 
+    - name: Wait Docker image
+  # You may pin to the exact commit or the version.
+  # uses: PaulLesur/wait-docker-image-github-action@8ec76ba80318922416b1cbefce5adbfe99893474
+  uses: PaulLesur/wait-docker-image-github-action@v1.0.0
+  with:
+    # Docker image
+    image: 
+    # Tag
+    tag: # optional, default is latest
+    # Timeout in seconds
+    timeout: # optional, default is 3600
+    # Wether or not to fail the action on timeout
+    fail-on-timeout: # optional, default is true
+    # Registry user
+    user: # optional, default is no_auth
+    # Registry password
+    password: # optional, default is no_auth
+    - name: Build & Push Docker Images
+  # You may pin to the exact commit or the version.
+  # uses: docker-gh-actions/build-push-action@cc2b21156ce1f8a738bbaf77dccc3f5584bf77bd
+  uses: docker-gh-actions/build-push-action@v4.0.1
+  with:
+    # List of a customs host-to-IP mapping (e.g., docker:10.180.0.1)
+    add-hosts: # optional
+    # List of extra privileged entitlement (e.g., network.host,security.insecure)
+    allow: # optional
+    # List of attestation parameters (e.g., type=sbom,generator=image)
+    attests: # optional
+    # List of build-time variables
+    build-args: # optional
+    # List of additional build contexts (e.g., name=path)
+    build-contexts: # optional
+    # Builder instance
+    builder: # optional
+    # List of external cache sources for buildx (e.g., user/app:cache, type=local,src=path/to/dir)
+    cache-from: # optional
+    # List of cache export destinations for buildx (e.g., user/app:cache, type=local,dest=path/to/dir)
+    cache-to: # optional
+    # Optional parent cgroup for the container used in the build
+    cgroup-parent: # optional
+    # Build's context is the set of files located in the specified PATH or URL
+    context: # optional
+    # Path to the Dockerfile
+    file: # optional
+    # List of metadata for an image
+    labels: # optional
+    # Load is a shorthand for --output=type=docker
+    load: # optional, default is false
+    # Set the networking mode for the RUN instructions during build
+    network: # optional
+    # Do not use cache when building the image
+    no-cache: # optional, default is false
+    # Do not cache specified stages
+    no-cache-filters: # optional
+    # List of output destinations (format: type=local,dest=path)
+    outputs: # optional
+    # List of target platforms for build
+    platforms: # optional
+    # Generate provenance attestation for the build (shorthand for --attest=type=provenance)
+    provenance: # optional
+    # Always attempt to pull all referenced images
+    pull: # optional, default is false
+    # Push is a shorthand for --output=type=registry
+    push: # optional, default is false
+    # Generate SBOM attestation for the build (shorthand for --attest=type=sbom)
+    sbom: # optional
+    # List of secrets to expose to the build (e.g., key=string, GIT_AUTH_TOKEN=mytoken)
+    secrets: # optional
+    # List of secret files to expose to the build (e.g., key=filename, MY_SECRET=./secret.txt)
+    secret-files: # optional
+    # Size of /dev/shm (e.g., 2g)
+    shm-size: # optional
+    # List of SSH agent socket or keys to expose to the build
+    ssh: # optional
+    # List of tags
+    tags: # optional
+    # Sets the target stage to build
+    target: # optional
+    # Ulimit options (e.g., nofile=1024:1024)
+    ulimit: # optional
+    # GitHub Token used to authenticate against a repository for Git context
+    github-token: # optional, default is ${{ github.token }}
+    - name: Promote Docker Images
+  # You may pin to the exact commit or the version.
+  # uses: EuphoricSystems/docker-promote-image@979b1e4078d81b66b6a0d3861dc5da18833006fa
+  uses: EuphoricSystems/docker-promote-image@1.0.0
+  with:
+    # The source image {registry}/{image}:{tag}
+    src: 
+    # List of all the destinations images {registry}/{image}:{tag}
+    destinations: 
+    - name: Push Docker Image
+  # You may pin to the exact commit or the version.
+  # uses: julioarruda/pushimagetoregistry@3679a680bb9d6cbf3c1de8aeed592faf1e140c8b
+  uses: julioarruda/pushimagetoregistry@v1
+  with:
+    # Username Name with push permission
+    acr-tokenname: 
+    # Token/PWD with push permission
+    acr-token: 
+    # Docker Account Name
+    acr-account: 
+    # Docker Image Name
+    acr-imagename: 
+    - name: Dynamic Build Docker Image
+  # You may pin to the exact commit or the version.
+  # uses: flownative/action-docker-build@94f07e1411f0e7421e664e6b9264c2a22a4d65d1
+  uses: flownative/action-docker-build@v1.8.0
+  with:
+    # The full tag reference. This must be a semver tag ref of an existing tagged image. For example, `refs/tags/v1.2.5+12`
+    tag_ref: # default is 
+    # The SHA hash of the Git commit being used for the build. If set, this value is used as a label for the resulting Docker image
+    git_sha: # optional, default is 
+    # The URL leading to the Git repository. If set, this value is used as a label for the resulting Docker image
+    git_repository_url: # optional, default is 
+    # The image name to build, without tag. For example, `flownative/docker-magic-image/magic-image`
+    image_name: # default is 
+    # The image tag to build. If empty, the tag is derived from tag_ref: e.g. `v1.2.5`
+    image_tag: # optional, default is 
+    # Password / token for the Github Docker image registry
+    registry_password: # default is 
+    - name: build docker image
+  # You may pin to the exact commit or the version.
+  # uses: xiaopeng163/github-action-docker@b726a8280a22f6c4860b27199db01c906dc68bec
+  uses: xiaopeng163/github-action-docker@v1.0.0
+  with:
+    # docker hub user
+    docker_hub_user: 
+    # docker hub token
+    docker_hub_token: 
+    # docker image name
+    image_name: 
+    - name: Action Docker images build
+  # You may pin to the exact commit or the version.
+  # uses: darshitsri/docker-push-action@076606ca6fa7c2961c56354d49d57a0df0d2a019
+  uses: darshitsri/docker-push-action@v1
+  with:
+    # Who to greet
+    who-to-greet: # default is World
+    - name: Get Docker Image Label
+  # You may pin to the exact commit or the version.
+  # uses: flownative/action-docker-get-label@09a88f9786813452032fb59c65e76f0e643521f8
+  uses: flownative/action-docker-get-label@v1.0.0
+  with:
+    # The Docker image name and tag, for example "flownative/php:7.4"
+    image: # default is 
+    # Username for the registry
+    registry_username: # optional, default is 
+    # Password for the registry
+    registry_password: # optional, default is 
+    # Endpoint of the registry. For example, `https://docker.pkg.github.com/v2/`
+    registry_endpoint: # optional, default is 
+    # The label identifier, for example "org.label-schema.version"
+    label: # default is 
+    - name: cas notarize docker image
+  # You may pin to the exact commit or the version.
+  # uses: codenotary/cas-notarize-docker-image-github-action@940d5493d206dd43c8e803ba97e956003756f980
+  uses: codenotary/cas-notarize-docker-image-github-action@1.0.0
+  with:
+    # Asset to notarize
+    asset: 
+    # API Key provided upon signing up through cas.codenotary.com
+    cas_api_key: 
+    - name: Dynamic Build Docker Image
+  # You may pin to the exact commit or the version.
+  # uses: flownative/action-docker-build@94f07e1411f0e7421e664e6b9264c2a22a4d65d1
+  uses: flownative/action-docker-build@v1.8.0
+  with:
+    # The full tag reference. This must be a semver tag ref of an existing tagged image. For example, `refs/tags/v1.2.5+12`
+    tag_ref: # default is 
+    # The SHA hash of the Git commit being used for the build. If set, this value is used as a label for the resulting Docker image
+    git_sha: # optional, default is 
+    # The URL leading to the Git repository. If set, this value is used as a label for the resulting Docker image
+    git_repository_url: # optional, default is 
+    # The image name to build, without tag. For example, `flownative/docker-magic-image/magic-image`
+    image_name: # default is 
+    # The image tag to build. If empty, the tag is derived from tag_ref: e.g. `v1.2.5`
+    image_tag: # optional, default is 
+    # Password / token for the Github Docker image registry
+    registry_password: # default is 
+    - name: Docker image semver latest
+  # You may pin to the exact commit or the version.
+  # uses: tinact/docker.image-latest@c121d37cb49c900f2a47807d0c3464ed22064e0c
+  uses: tinact/docker.image-latest@1.0.3
+  with:
+    # Name of the docker image for the last semver version.
+    image_name: 
+    - name: Docker Image Update Monitor
+  # You may pin to the exact commit or the version.
+  # uses: ActionsTools/docker-image-update-monitor-action@2e48ed2d813f6176c7fc6d6fda1c41283dc031c5
+  uses: ActionsTools/docker-image-update-monitor-action@v1.0.0
+  with:
+    # Name of docker image
+    image: 
+    # The specific tag that wants to monitor, default to latest
+    tag: # optional, default is latest
+    # The username of the dockerhub
+    username: 
+    # The password of the dockerhub
+    password: 
+    - name: DigitalOcean Docker Image Publish
+  # You may pin to the exact commit or the version.
+  # uses: ripplr-io/docr-docker-publish@44fac8d6ff7c3ece58c9ffe50f370514d166f5b7
+  uses: ripplr-io/docr-docker-publish@v1
+  with:
+    # Image path in the format registry-name/image-name
+    image_path: 
+    # Number of characters from the commit SHA
+    sha_size: # optional, default is 8
+    # The path + name of the Dockerfile you want to build (-f flag)
+    dockerfile: # optional, default is Dockerfile
+    # The docker build context (usually '.')
+    docker_build_context: # optional, default is .
+    - name: Docker Image Artifact Download
+  # You may pin to the exact commit or the version.
+  # uses: ishworkh/docker-image-artifact-download@393557b21987ac55433e7cd8bf92f9a81999d6f9
+  uses: ishworkh/docker-image-artifact-download@v2.1.0
+  with:
+    # Docker image to download
+    image: 
+    # Repository name in form of `owner/repo`.
+    repository: # optional, default is 
+    # Name of the workflow to download image from.
+    workflow: # optional, default is 
+    # Github token with read permission to artifacts in given repo.
+    token: # optional, default is 
+    # Conclusion for an workflow run.
+    workflow_conclusion: # optional, default is 
+    # SHA for the commit.
+    commit_sha: # optional, default is 
+    # Branch name.
+    branch: # optional, default is 
+    # Name of event that triggered the workflow run.
+    workflow_event: # optional, default is 
+    # Exact run id for the workflow.
+    workflow_run_id: # optional, default is 
+    - name: docker-image-size-limit
+  # You may pin to the exact commit or the version.
+  # uses: wemake-services/docker-image-size-limit@eb8d461c65eb2ece41a954ca12395b181feac4a0
+  uses: wemake-services/docker-image-size-limit@1.0.1
+  with:
+    # Image name to be checked
+    image: 
+    # Human readable size as the hard limit
+    size: - name: docker-image-size-limit
+  # You may pin to the exact commit or the version.
+  # uses: wemake-services/docker-image-size-limit@eb8d461c65eb2ece41a954ca12395b181feac4a0
+  uses: wemake-services/docker-image-size-limit@1.0.1
+  with:
+    # Image name to be checked
+    image: 
+    # Human readable size as the hard limit
+    size: 
+    
+    - name: Docker Image Update Checker
+  # You may pin to the exact commit or the version.
+  # uses: lucacome/docker-image-update-checker@f50d56412b948cfdbb842c5419372681e0db3df1
+  uses: lucacome/docker-image-update-checker@v1.2.1
+  with:
+    # Docker base image
+    base-image: 
+    # Docker image
+    image: 
+    # Platforms to check
+    platforms: # optional, default is linux/amd64
+    
+    - name: Docker Image Artifact Upload
+  # You may pin to the exact commit or the version.
+  # uses: ishworkh/docker-image-artifact-upload@a50b9e168f8e28c259eb245900406427fa22213a
+  uses: ishworkh/docker-image-artifact-upload@v2.1.0
+  with:
+    # Docker image to upload
+    image: 
+    # Retention days for the image artifact
+    retention_days: # optional, default is 0
+    - name: Version Tag Docker Image
+  # You may pin to the exact commit or the version.
+  # uses: jacobsvante/version-tag-docker-image@14f41364d3db994e528c2cb0e4e7269a64ae5236
+  uses: jacobsvante/version-tag-docker-image@v0.1.0
+  with:
+    # Manually provided semantic version (e.g: 0.3.4)
+    version: 
+    # Docker registry
+    docker-registry: 
+    # Docker username
+    docker-username: 
+    # Docker password
+    docker-password: 
+    # Name of the docker image
+    docker-image: 
+    # Add label `"version tagged: $inputs.docker-registry"` to the relevant release-please created pull request
+    add-pr-label: # default is true
+    # PR label color
+    pr-label-color: # default is #0db7ed
+    - name: docker-image-version
+  # You may pin to the exact commit or the version.
+  # uses: zqcccc/docker-image-version@1d3dd00e8e9a9a84e2d5e6c40d42df4d1b0359e7
+  uses: zqcccc/docker-image-version@0.1
+  with:
+    # get the latest version of the repository
+    repository: # default is 0.0.1
+    - name: Scan Docker Images
+  # You may pin to the exact commit or the version.
+  # uses: spicyparrot/scan-images@9793ec66e8c39de9cc3cc9f2d8ea599f919b2214
+  uses: spicyparrot/scan-images@v0.2.0
+  with:
+    # Image grep pattern
+    image_grep: 
+    # Comma separated list of severities to check for ('CRITICAL,HIGH,MEDIUM,LOW')
+    severities: # optional, default is HIGH,CRITICAL
+    # Upload HTML reports for download
+    upload_reports: # optional, default is true
+    # Return non-zero exit code if any issues found
+    exit_on_error: # optional, default is true
+    - name: Test Docker Image
+  # You may pin to the exact commit or the version.
+  # uses: jina-ai/action-hubble-test-docker@711374770bc94ef16ca6c2c39af30142d9b864c2
+  uses: jina-ai/action-hubble-test-docker@v6
+  with:
+    # Platform to run docker build
+    platform: # optional, default is amd64
+    - name: Dynamic Build Docker Image
+  # You may pin to the exact commit or the version.
+  # uses: flownative/action-docker-build@94f07e1411f0e7421e664e6b9264c2a22a4d65d1
+  uses: flownative/action-docker-build@v1.8.0
+  with:
+    # The full tag reference. This must be a semver tag ref of an existing tagged image. For example, `refs/tags/v1.2.5+12`
+    tag_ref: # default is 
+    # The SHA hash of the Git commit being used for the build. If set, this value is used as a label for the resulting Docker image
+    git_sha: # optional, default is 
+    # The URL leading to the Git repository. If set, this value is used as a label for the resulting Docker image
+    git_repository_url: # optional, default is 
+    # The image name to build, without tag. For example, `flownative/docker-magic-image/magic-image`
+    image_name: # default is 
+    # The image tag to build. If empty, the tag is derived from tag_ref: e.g. `v1.2.5`
+    image_tag: # optional, default is 
+    # Password / token for the Github Docker image registry
+    registry_password: # default is 
+    - name: Docker Image Deploy In Rancher1.6
+  # You may pin to the exact commit or the version.
+  # uses: ziguilp/rancher-deploy-action@d2351866649e1dd0f19f19550c5713736bfb8c58
+  uses: ziguilp/rancher-deploy-action@v0.4
+  with:
+    # API Url of your rancher servcie , you can get in rancher UI,like: https://rancher.test.com/v2-beta/projects/1a22/services/1s33
+    serviceInfoApiUrl: 
+    # API Access key created in Rancher
+    rancherAccessKey: 
+    # API Secret key created in Rancher
+    rancherSecretKey: 
+    # Docker Image, like: test/nginx:latest
+    dockerImage: 
+    - name: publish docker image to ghcr.io
+  # You may pin to the exact commit or the version.
+  # uses: icg-software/docker-push-action@98cb38829cc8265abdd9a8eed370178334be0d09
+  uses: icg-software/docker-push-action@v0.4.12
+  with:
+    # package name on docker registry
+    dockerName: 
+    # github repository owner
+    repoOwner: 
+    # package name on docker registry
+    githubUser: 
+    # package name on docker registry
+    githubToken: 
+    - name: GitHub Action for Deploy
+  # You may pin to the exact commit or the version.
+  # uses: buildtool/deploy-action@8fe7d26ff699ea3c2399878c689551e8d1b13f55
+  uses: buildtool/deploy-action@v1
+  with:
+    # specify which target to deploy to
+    target: 
+    - name: ecs-cd
+  # You may pin to the exact commit or the version.
+  # uses: haedaal/ecs-deploy@abedc7d962ff7046c8f41ea56e8bb2af1203e7eb
+  uses: haedaal/ecs-deploy@v0.0.3
+  with:
+    # ECR Repository
+    ecr-repo: 
+    # ECS Service
+    ecs-service: 
+    # ECS Cluster
+    ecs-cluster: 
+    # ECS Service task definition
+    task-definition: 
+    # AWS Access Key Id
+    aws-access-key-id: 
+    # AWS Secret Access Key
+    aws-secret-access-key: 
+    # AWS Region
+    aws-region: 
+    - name: Build and publish multi platform Docker images
+  # You may pin to the exact commit or the version.
+  # uses: dawidd6/action-docker-publish-changed@20bfe42234027c40173c87e255ed7df97ba18a81
+  uses: dawidd6/action-docker-publish-changed@v3.0.1
+  with:
+    # GitHub token
+    token: # optional, default is ${{github.token}}
+    # DockerHub username
+    username: # optional
+    # DockerHub password
+    password: # optional
+    # Platforms for which the image will be built (comma separated)
+    platforms: # optional, default is linux/amd64
+    # Image tag
+    tag: # optional, default is latest
+    - name: Deploy Multiple Docker Images to Heroku Apps
+  # You may pin to the exact commit or the version.
+  # uses: snithyanantham/docker-compose-multiple-apps-heroku-deploy@a4590bf326a12190449bdd4c07657e048b1ca9d7
+  uses: snithyanantham/docker-compose-multiple-apps-heroku-deploy@v1.0
+  with:
+    # Email linked to your Heroku account
+    email: 
+    # Your Heroku API Key
+    api_key: 
+    # Your Heroku App Name
+    app_name: 
+    # docker-compose File Path
+    docker_compose_file: 
+    # List of Docker Images generated from docker-compose and Heroku app names with type
+    heroku_apps: 
+   - name: Build and publish Docker Image to GitHub Container Registry
+  # You may pin to the exact commit or the version.
+  # uses: TCPShield/gp-docker-action@65486288374aeae8705fc543405dc4d23de6060b
+  uses: TCPShield/gp-docker-action@1.1.13
+  with:
+    # Github username to push Docker image from
+    github-username: 
+    # GitHub token to push Docker image to GitHub Container Registry
+    github-token: 
+    # Docker Image tag
+    image-tag: # optional, default is latest
+    # Extract git-tag from repository
+    extract-git-tag: # optional, default is false
+    # Dockerfile name
+    dockerfile: # optional, default is Dockerfile
+    # Path to build context
+    build-context: # optional, default is .
+    # Pull the image before buiding it
+    pull-image: # optional, default is false
+    # Any additional docker build arguments as a string
+    custom-args: # optional, default is 
+    - name: Deploy to Firebase Functions with latest node.js docker image
+  # You may pin to the exact commit or the version.
+  # uses: hbarve1/github-action-firebase-functions@e440ef33e713e266e04c0db3297ba1949d04ff93
+  uses: hbarve1/github-action-firebase-functions@v1.0.1
+  - name: Bump docker image version on a remote host
+  # You may pin to the exact commit or the version.
+  # uses: thematchless/bump-image-version-action@13a7151d21809de77f9708f47f87876d48de7fd9
+  uses: thematchless/bump-image-version-action@v2
+  with:
+    # Remote Docker host (user@host)
+    remote_docker_host: 
+    # Remote Docker ssh port (22)
+    remote_docker_port: # optional, default is 22
+    # The name of the service defined in the docker-compose.yml
+    service_name: 
+    # Remote Docker SSH public key
+    ssh_public_key: 
+    # SSH private key used to connect to the docker host
+    ssh_private_key: 
+    # Deployment command args.
+    args: 
+    # The path to your docker-compose.yml on the remote docker host
+    deploy_path: # optional
+    # Docker stack file used. Default is docker-compose.yml
+    stack_file_name: # optional
+    # Pull docker images before deploying.
+    pull_images_first: # optional
+    - name: Docker Action: Image Build And Push
+  # You may pin to the exact commit or the version.
+  # uses: darkless456/docker-image-action@1882a9c9a5413c728ebb987a9ad14706d31f95ee
+  uses: darkless456/docker-image-action@latest
+  with:
+    # Docker Registry Url, eg: registry.xxxxx.cs.com
+    registry_url: 
+    # Docker Image Namespace
+    namespace: 
+    # Docker Image Repository Name
+    repository_name: 
+    # Docker Login UserName
+    user_name: 
+    # Docker Login Password
+    password: 
+    # Image Build Version, Default Image Version (latest)
+    image_version: # default is latest
+    # Docker File Directory, Default Current Directory (.)
+    docker_file: # optional, default is .
+  - name: GitHub Action for Deploy
+  # You may pin to the exact commit or the version.
+  # uses: buildtool/deploy-action@8fe7d26ff699ea3c2399878c689551e8d1b13f55
+  uses: buildtool/deploy-action@v1
+  with:
+    # specify which target to deploy to
+    target: 
+    - name: Docker iamge publischer
+  # You may pin to the exact commit or the version.
+  # uses: lBeJIuk/adip@2fdf1059470ce6e4db04f86d3a84975f989e6019
+  uses: lBeJIuk/adip@v1
+  with:
+    # Variable for password
+    PASSWORD: 
+    # Variable for token
+    TOKEN: 
+    # 
+    PACKAGE_REPOSITORY: 
+    # Variable image registry
+    REGISTRY: # optional, default is docker.pkg.github.com
+    # Variable for app name
+    APP_NAME: # optional
+    # Variable for username
+    USERNAME: # optional
+    # Shows where the Dockerfile is
+    CONTEXT: # optional
+    - name: Setup Node.js environment
+  uses: actions/setup-node@v3.7.0
+  with:
+    # Set always-auth in npmrc.
+    always-auth: # optional, default is false
+    # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
+    node-version: # optional
+    # File containing the version Spec of the version to use.  Examples: .nvmrc, .node-version, .tool-versions.
+    node-version-file: # optional
+    # Target architecture for Node to use. Examples: x86, x64. Will use system architecture by default.
+    architecture: # optional
+    # Set this option if you want the action to check for the latest available version that satisfies the version spec.
+    check-latest: # optional
+    # Optional registry to set up for auth. Will set the registry in a project level .npmrc and .yarnrc file, and set up auth to read in from env.NODE_AUTH_TOKEN.
+    registry-url: # optional
+    # Optional scope for authenticating against scoped registries. Will fall back to the repository owner when using the GitHub Packages registry (https://npm.pkg.github.com/).
+    scope: # optional
+    # Used to pull node distributions from node-versions. Since there's a default, this is typically not supplied by the user. When running this action on github.com, the default value is sufficient. When running on GHES, you can pass a personal access token for github.com if you are experiencing rate limiting.
+    token: # optional, default is ${{ github.server_url == 'https://github.com' && github.token || '' }}
+    # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
+    cache: # optional
+    # Used to specify the path to a dependency file: package-lock.json, yarn.lock, etc. Supports wildcards or a list of file names for caching multiple dependencies.
+    cache-dependency-path: # optional
+ - name: Teamwork GitHub Sync
+  # You may pin to the exact commit or the version.
+  # uses: Teamwork/github-sync@42dcac69eb5a41fad0d518efeb6aecf1e45f8d01
+  uses: Teamwork/github-sync@v1.3.3
+  with:
+    # GitHub token
+    GITHUB_TOKEN: 
+    # Teamwork URI
+    TEAMWORK_URI: 
+    # Teamwork API token
+    TEAMWORK_API_TOKEN: 
+    # Do you want to enable automatic tagging: true/false
+    AUTOMATIC_TAGGING: # optional
+    # The case-sensitive column name of the column you would like the task to be moved to once the PR has been opened
+    BOARD_COLUMN_OPENED: # optional, default is 
+    # The case-sensitive column name of the column you would like the task to be moved to once the PR has been merged
+    BOARD_COLUMN_MERGED: # optional, default is 
+    # The case-sensitive column name of the column you would like the task to be moved to if the PR was closed without being merged
+    BOARD_COLUMN_CLOSED: # optional, default is 
+    - name: Glo Move Cards
+  # You may pin to the exact commit or the version.
+  # uses: Axosoft/glo-action-move-card@e676e6f0589d83e0c55902e07397f269bedb804c
+  uses: Axosoft/glo-action-move-card@v1
+  with:
+    # Auth token for user
+    authToken: 
+    # Array of { cardId, boardId } objects
+    cards: 
+    # Name of column to move cards to
+    column: 
+   - name: Glo Add Label To Cards
+  # You may pin to the exact commit or the version.
+  # uses: Axosoft/glo-action-label-card@2e09694cfad6ece65ac232fbe90d317786e3fe5c
+  uses: Axosoft/glo-action-label-card@v1
+  with:
+    # Auth token for user
+    authToken: 
+    # Array of { cardId, boardId } objects
+    cards: 
+    # Name of label to add to cards
+    label: 
+    - name: Setup Jira
+  # You may pin to the exact commit or the version.
+  # uses: atlassian/gajira-cli@7b8487d76cd88bf5d50ba00c6cca6edff1ddd507
+  uses: atlassian/gajira-cli@v3
+  with:
+    # Version of the CLI to use
+    version: # optional, default is 1.0.27
+    - name: Glo Move Cards
+  # You may pin to the exact commit or the version.
+  # uses: Axosoft/glo-action-move-card@e676e6f0589d83e0c55902e07397f269bedb804c
+  uses: Axosoft/glo-action-move-card@v1
+  with:
+    # Auth token for user
+    authToken: 
+    # Array of { cardId, boardId } objects
+    cards: 
+    # Name of column to move cards to
+    column: 
+    - name: Jira Login
+  # You may pin to the exact commit or the version.
+  # uses: atlassian/gajira-login@ca13f8850ea309cf44a6e4e0c49d9aa48ac3ca4c
+  uses: atlassian/gajira-login@v3
+  - name: Privileged Requester
+  - name: dockerhub-semantic-release
+  # You may pin to the exact commit or the version.
+  # uses: timo-reymann/dockerhub-semantic-release-gh-action@b49e26f31a8bf0ed6f4ad0c70e562e540f1a9864
+  uses: timo-reymann/dockerhub-semantic-release-gh-action@v1
+  with:
+    # Image slug containting org and image (e.g. user/imagename)
+    image: 
+    # Username for docker hub
+    dockerhub_username: 
+    # Token for docker hub
+    dockerhub_token: 
+    # Github token to use
+    github_token: 
+    - name: Push AWS ECR
+  # You may pin to the exact commit or the version.
+  # uses: hands-lab/push-ecr-action@18f19e41550f632ff0d8ce224a3ffd1e552d3598
+  uses: hands-lab/push-ecr-action@v1.1
+  with:
+    # image name
+    image: 
+    # AWS Access Key ID
+    aws-access-key-id: 
+    # AWS Secret Access Key
+    aws-secret-access-key: 
+    # AWS Region
+    aws-region: 
+    # AWS Account ID
+    aws-account-id: 
+  uses: github/privileged-requester@v1.0.0
+  with:
+    # Repository scoped token
+    myToken: # default is ${{ github.token }}
+    # An alternative robot user PAT to be used instead of the built-in Actions token
+    robotUserToken: # optional
+    # Path where the privileged requester configuration can be found
+    path: # default is config/privileged-requester.yaml
+    # The creator of the PR for this pull request event
+    prCreator: # default is ${{ github.event.pull_request.user.login }}
+    # The number of the PR for this pull request event
+    prNumber: # default is ${{ github.event.pull_request.number }}
+    # An option to check that every commit in the PR is made from the privileged requester
+    checkCommits: # default is true
+    # An option to check that the PR diff only has a removal diff, with no additions
+    checkDiff: # default is true
+    # An option to check that the labels on the PR match those defined in the privileged requester config
+    checkLabels: # default is true
+    - name: Accessibility alt text bot
+  uses: github/accessibility-alt-text-bot@v1.3.0
+  - name: Jira Find issue key
+  # You may pin to the exact commit or the version.
+  # uses: atlassian/gajira-find-issue-key@7d9cbdfce900a0fcf608050ce728620a928be8b6
+  uses: atlassian/gajira-find-issue-key@v3
+  with:
+    # Provide a string to extract issue key from
+    string: # optional
+    # Find from predefined place (should be either 'branch', or 'commits')
+    from: # optional, default is commits
+- name: Auto PR. Pivotal Tracker style
+  # You may pin to the exact commit or the version.
+  # uses: shwld/auto-pivotal-style-pr-action@404025e26ef25491618227d3974328c92effae5e
+  uses: shwld/auto-pivotal-style-pr-action@v0.0.4
+  with:
+    # GitHub token
+    github-token:   
+    - name: Jira Updater
+  # You may pin to the exact commit or the version.
+  # uses: fernandezafb/jira-updater@9ed89f77dad8091f620b69905b60bb31a5b2254f
+  uses: fernandezafb/jira-updater@v3.0.1
+  with:
+    # Key of the issue to be transitioned
+    issue: 
+    # Version to update the JIRA fixVersions field
+    fixVersions: 
+  - name: Add To GitHub projects
+  uses: actions/add-to-project@v0.5.0
+  with:
+    # URL of the project to add issues to
+    project-url: 
+    # A GitHub personal access token with write access to the project
+    github-token: 
+    # A comma-separated list of labels to use as a filter for issue to be added
+    labeled: # optional
+    # The behavior of the labels filter, AND to match all labels, OR to match any label, NOT to exclude any listed label (default is OR)
+    label-operator: # optional
+- name: JackDeng-action-confluence-sync
+  # You may pin to the exact commit or the version.
+  # uses: jack-fireworkhq/action-confluence-sync@8c7d4ad137d9a08257e998f661c054491e3e4fae
+  uses: jack-fireworkhq/action-confluence-sync@0.1.6
+  with:
+    # base url of confluence
+    confluence_url: 
+    # confluence username
+    confluence_username: 
+    # token of user
+    confluence_token: 
+    # files to sync
+    files: 
+    - name: Dependadoc
+  # You may pin to the exact commit or the version.
+  # uses: caljess599/dependadoc@622bc6dbc736dfa52fc8021322032b64605a33cd
+  uses: caljess599/dependadoc@v0.1
+  with:
+    # folder to evaluate for changed files
+    mirrored-folder: 
+    # repo to open PR against, e.g., yourorg/your-repo
+    docs-repository: 
+    # relative path to place mirrored folder
+    docs-repository-path: # optional, default is .
+    # name of variable where repo token is stored; default is DOC_REPO_TOKEN
+    docs-repository-token-variable: 
+   - name: Ticket in PR Title
+  # You may pin to the exact commit or the version.
+  # uses: tfromme/ticket-in-pr-title-action@66a4d918a3af4e4f3eea4db9887091116eefe30d
+  uses: tfromme/ticket-in-pr-title-action@v1.0.0
+  with:
+    # Github Token
+    token: 
+    # Ticket Prefix to search for
+    ticket-prefix: 
+    # Whether to fail (default) or just warn
+    fail: # optional, default is true
+    - name: RegEx Issue Labeler
+  uses: github/issue-labeler@v3.2
+  with:
+    # The GITHUB_TOKEN secret
+    repo-token: # optional, default is ${{ github.token }}
+    # Path to the labeler.yml configuration file
+    configuration-path: 
+    # Controls if versioned regex templates are being used
+    enable-versioned-regex: 
+    # The regex version number to use. Only required if using versioned regex files
+    versioned-regex: # optional
+    # Is optional and will result in any issues prior to this timestamp to be ignored
+    not-before: # optional
+    # The name of the label that should be added to an issue where the specified `version-regex` can not be found.
+    body-missing-regex-label: # optional
+    # Include the title in the regex target
+    include-title: # optional, default is 0
+    # Include the body in the regex target
+    include-body: # optional, default is 1
+    # Remove the label from the issue if the label regex does not match
+    sync-labels: # optional, default is 0
+    # The number of the issue/PR to label
+    issue-number: # optional, default is ${{ github.event.issue.number || github.event.pull_request.number }}
+    - name: ssh-docker-run
+  # You may pin to the exact commit or the version.
+  # uses: littleboyfury/ssh-docker-run@fa1e83b4438afd037f5ccd2bcf996818e30daee2
+  uses: littleboyfury/ssh-docker-run@v1.0.2
+  with:
+    # ssh server private key base64 string (cat id_rsa | base64)
+    deploy_token: 
+    # server connect url (username@host)
+    server_host: 
+    # docker connect host (ccr.ccs.tencentyun.com)
+    docker_host: 
+    # docker login username
+    docker_username: 
+    # docker login password
+    docker_password: 
+    # docker namespace
+    docker_namespace: 
+    # docker repository name
+    docker_repo: 
+    # image tag (latest)
+    image_tag: 
+    # docker container name
+    container_name: 
+    # docker container port (8001:80)
+    container_port: 
+    # docker options
+    docker_options: # optional
+    - name: Build Docker Image, push it to AWS ECR and run kubectl command against an AWS EKS
+  # You may pin to the exact commit or the version.
+  # uses: diogohudson/build_docker_2_ecr_eks@deed28ca73d748eba97d98847f903a3a77e702ad
+  uses: diogohudson/build_docker_2_ecr_eks@v1
+  with:
+    # The AWS access key id
+    access_key_id: 
+    # The AWS secret access key
+    secret_access_key: 
+    # AWS Account ID
+    account_id: 
+    # Name of your ECR repository
+    repo: 
+    # The AWS region
+    region: 
+    # Set this to true to create the repository if it does not already exist
+    create_repo: # optional
+    # Comma-separated string of ECR image tags
+    tags: # optional, default is latest
+    # Name of Dockerfile to use
+    dockerfile: # optional, default is Dockerfile
+    # Extra flags to pass to docker build (see docs.docker.com/engine/reference/commandline/build)
+    extra_build_args: # optional, default is 
+    # Path to Dockerfile, defaults to the working directory
+    path: # optional, default is .
+    - name: dockerhub-retag
+  # You may pin to the exact commit or the version.
+  # uses: airbone95/dockerhub-retag@b37dfb1b012697f75c960d2a6ef6c8d8e65e01ab
+  uses: airbone95/dockerhub-retag@v0.5
+  with:
+    # the old tag that should recieve the new tag (old tag will NOT be deleted)
+    old_tag: 
+    # the new tag you want to set on the old tag image
+    new_tag: 
+    # username to login to dockerhub
+    dockerhub_username: 
+    # password to login to dockerhub
+    dockerhub_password: 
+    # image repo in dockerhub
+    dockerhub_repo: 
+   - name: Docker GitOps Tag Action
+  # You may pin to the exact commit or the version.
+  # uses: oaklees/docker-gitops-tag-action@195c20a93ec77a0d7885e3c40198c6c1f251de17
+  uses: oaklees/docker-gitops-tag-action@v0.0.2
+  with:
+    # The name of the Docker image prepend the generated tag
+    docker_image: 
+    # A prefix to apply to the generated tag
+    tag_prefix: # optional, default is 
+    - name: ghcr-retag
+  # You may pin to the exact commit or the version.
+  # uses: airbone95/ghcr-retag@d35bc2cbd69ba53ba473544013d93ed8aab7bcc0
+  uses: airbone95/ghcr-retag@v0.2
+  with:
+    # the old tag that should recieve the new tag (old tag will NOT be deleted)
+    old_tag: 
+    # the new tag you want to set on the old tag image
+    new_tag: 
+    # username to login to ghcr
+    ghcr_username: 
+    # password to login to ghcr
+    ghcr_password: 
+    # image repo in ghcr
+    ghcr_repo: 
+- name: Build and push Docker images to be used in On-Premises Kubernetes cluster
+  # You may pin to the exact commit or the version.
+  # uses: MP-ES/build-push-action@135072be762f7339c0f8db110ad8c884a7f91a1e
+  uses: MP-ES/build-push-action@1.0.3
+  with:
+    # Server address of Docker registry. If not set then will default to Docker Hub
+    registry: # optional, default is hub.docker.com
+    # Username used to log against the Docker registry
+    username: # optional
+    # Password or personal access token used to log against the Docker registry
+    password: # optional
+    # List of build-time variables
+    build-args: # optional
+    # Relative path under $GITHUB_WORKSPACE to place the repository checkout code
+    checkout-path: # optional
+    # Build's context is the set of files located in the specified PATH or URL
+    context: # optional
+    # Path to the Dockerfile
+    file: # optional
+    # The name of docker image
+    image: 
+    # Control if the image have to be pushed to the registry
+    push: # optional, default is true
+   - name: Publish Docker Action
+  # You may pin to the exact commit or the version.
+  # uses: jerray/publish-docker-action@87d84711629b0dc9f6bb127b568413cc92a2088e
+  uses: jerray/publish-docker-action@v1.0.5
+  with:
+    # Username used to login docker registry
+    username: 
+    # Password used to login docker registry
+    password: 
+    # Docker registry server address
+    registry: # optional
+    # Docker repository name
+    repository: # optional
+    # Docker file used to build image
+    file: # optional, default is Dockerfile
+    # Docker build context
+    path: # optional, default is .
+    # Static image tag list, separated by comma
+    tags: # optional, default is latest
+    # Docker build-time variables, separated by comma
+    build_args: # optional
+    # Docker build target (stage name) for multi-stage builds
+    target: # optional
+    # If allow pull request trigger build
+    allow_pull_request: # optional, default is false
+    # Generate tags by conditions automatically
+    auto_tag: # optional, default is false
+    # Images to consider as cache sources
+    cache: # optional 
+    - name: Pull and Run ECR image on EC2
+  # You may pin to the exact commit or the version.
+  # uses: KiwisAreYummy/ecr-ssh-run@f4b00d4b322a5f55908dce27ece6f02630f9317b
+  uses: KiwisAreYummy/ecr-ssh-run@v0
+  with:
+    # The instance ip address
+    instance-ip: 
+    # The ssh key pair name
+    key-pair: 
+    # The ECR registry
+    ecr-registry: 
+    # The ECR repository
+    ecr-repository: 
+    # The image tag
+    image-tag: 
+    # the value of the ssh key
+    private-key: 
+    - name: Deploy to docker
+  # You may pin to the exact commit or the version.
+  # uses: tvrcgo/docker-builder@d8d13628891e4d3fd1130dd9c5ee9464be057be2
+  uses: tvrcgo/docker-builder@v0.3.1
+  with:
+    # Docker registry
+    registry: # optional, default is registry.cn-shenzhen.aliyuncs.com
+    # Docker username
+    username: 
+    # Docker password
+    password: 
+    # Namespace and repository. format: namespace/repository
+    repository: 
+    # Image tag
+    tag: # optional
+    - name: DockerHub Build And Push- name: gcr-upload-action
+  # You may pin to the exact commit or the version.
+  # uses: Dayanand-Chinchure/gcr-upload-action@7bf581fcc9a66a8d56a44829fb4e9681f2d653b2
+  uses: Dayanand-Chinchure/gcr-upload-action@1.2
+  with:
+    # Contents of a Service Account JSON Key
+    service_account: 
+    # Registry host name (must match dst image)
+    registry: # optional, default is gcr.io
+    # Source image name
+    source_image: 
+    # Destination image name
+    destination_image: 
+  # You may pin to the exact commit or the version.
+  # uses: Abhishek-070/Dockerhub-Build-Push@1240d89ce6f82ba5911cfbbd01f4d67229c11f69
+  uses: Abhishek-070/Dockerhub-Build-Push@v1.0- name: DockerHub Build And Push
+  # You may pin to the exact commit or the version.
+  # uses: Abhishek-070/Dockerhub-Build-Push@1240d89ce6f82ba5911cfbbd01f4d67229c11f69
+  uses: Abhishek-070/Dockerhub-Build-Push@v1.0
+  - name: Artifactory promote action
+  # You may pin to the exact commit or the version.
+  # uses: timperman/artifactory-promote-action@0036fb6d30c00bcb0f9fca8b19915ffd24a93124
+  uses: timperman/artifactory-promote-action@v1
+  with:
+    # artifactory server URL (i.e. https://example-artifactory.jfrog.io)
+    url: 
+    # artifactory username
+    username: 
+    # artifactory password
+    password: 
+    # the source repository to move or copy
+    sourceRepo: 
+    # the target repository to move or copy
+    targetRepo: 
+    # the docker repository name to promote
+    dockerRepository: 
+    # the new tag that the image should have after being promoted if you want to
+    tag: # optional
+    # an optional tag name to promote, if empty - the entire docker repository will be promoted
+    targetTag: # optional, default is latest
+    # when true, a copy of the image is promoted; when false, the image is moved to the target repository
+    copy: # optional, default is true
+    - name: dockerhub-semantic-release
+  # You may pin to the exact commit or the version.
+  # uses: timo-reymann/dockerhub-semantic-release-gh-action@b49e26f31a8bf0ed6f4ad0c70e562e540f1a9864
+  uses: timo-reymann/dockerhub-semantic-release-gh-action@v1
+  with:
+    # Image slug containting org and image (e.g. user/imagename)
+    image: 
+    # Username for docker hub
+    dockerhub_username: 
+    # Token for docker hub
+    dockerhub_token: 
+    # Github token to use
+    github_token: 
+   - name: EKS Private Docker
+  # You may pin to the exact commit or the version.
+  # uses: kjranyone/eks-private-docker@ebb14a997b92af1093dc9ff63275a6acd277a6e9
+  uses: kjranyone/eks-private-docker@draft
+  with:
+    # access key for control eks
+    aws_access_key_id: 
+    # secret key for control eks
+    aws_secret_access_key: 
+    # eks cluster region
+    aws_region: 
+    # eks cluster name
+    cluster_name: 
+    # kubectl secret name
+    secret_name: 
+    # your docker registry name
+    docker_server: 
+    # your docker username
+    docker_username: 
+    # your docker password
+    docker_password: 
+    # your docker email
+    docker_email:  
+    - name: Docker Extract
+  # You may pin to the exact commit or the version.
+  # uses: shrink/actions-docker-extract@40400b42f4f8b663c647f535e2c6674658e39fc6
+  uses: shrink/actions-docker-extract@v2
+  with:
+    # Docker Image to extract files from
+    image: 
+    # Path (from root) to a file or directory within Image
+    path: 
+    - name: Deploy to Deploys.app
+  # You may pin to the exact commit or the version.
+  # uses: deploys-app/deploys-action@bd456d53e168a137b57a60c356a4bb8a7a621245
+  uses: deploys-app/deploys-action@v1.0.2
+  with:
+    # Project ID
+    project: 
+    # Deploy Location ID
+    location: 
+    # Deployment Name
+    name: 
+    # Docker Image to deploy
+    image: 
+    # Deployment Port
+    port: # optional
+    # Deployment Type
+    type: # optional
+    # Minimum Replica
+    minReplicas: # optional
+    # Maximum Replica
+    maxReplicas: # optional
+   - name: Observian-serverless-AWS
+  # You may pin to the exact commit or the version.
+  # uses: observian/observian--serverless-deploy@92abd255cdec35c2358f8a40457a95c5f24ece12
+  uses: observian/observian--serverless-deploy@v1.0
+  with:
+    # The AWS access key id
+    access_key_id: 
+    # The AWS secret access key
+    secret_access_key: 
+    # The AWS region you're deploying to
+    region: 
+    # comma-separated values for plugin names to be installed before the deploy is run
+    plugins: # optional
+    # the name of the serverless deploy file.  Defaults to serverless.yml
+    config_file: # optional, default is serverless.yml
+   - name: Auto Docker Push
+  # You may pin to the exact commit or the version.
+  # uses: bozdoz/auto-docker-push@4b66f8aac49b399c209193b9ab9091e6aa80ee51
+  uses: bozdoz/auto-docker-push@v2.0.0-published-action
+  with:
+    # Name of image
+    image: 
+    # Docker Hub username'
+    username: 
+    # Docker Hub password'
+    password: 
+    - name: Get Docker Hub Tag
+  # You may pin to the exact commit or the version.
+  # uses: jacobtomlinson/gha-get-docker-hub-tags@4d1339c986f06d2b6ffc2ef0fff024dca0ef0735
+  uses: jacobtomlinson/gha-get-docker-hub-tags@0.1.3
+  with:
+    # The Docker Hub org
+    org: 
+    # The Docker Hub repo
+    repo: 
+    - name: Push to Amazon ECR
+  # You may pin to the exact commit or the version.
+  # uses: jwalton/gh-ecr-push@b10a019116283fff10914554dfe85bfb1c21d41b
+  uses: jwalton/gh-ecr-push@v1.3.6
+  with:
+    # Access key for IAM User.
+    access-key-id: 
+    # Secret access key for IAM User.
+    secret-access-key: 
+    # The name of the image on ECR.
+    image: 
+    # The local name of the image.  If not specified, defaults to same as 'image'.
+    local-image: # optional
+    # AWS Region to use.  Defaults to us-east-1.
+    region: # optional
+    # Whether to "push" or "pull" the image. Defaults to "push".
+    direction: # optional
+    # Specifies if the image follows the semantic versioning standard. It will push X, X.Y and X.Y.Z tags. Defaults to false.
+    is-semver: # optional
+    - name: Docker Action
+  # You may pin to the exact commit or the version.
+  # uses: zenato/docker-action@8309ea4d790d074676660449b9f2bcbcae25cdb9
+  uses: zenato/docker-action@v1.0.0
+  with:
+    # Registry username
+    username: 
+    # Registry password
+    password: 
+    # Repository on registry
+    repository: 
+    # Registry hostname
+    registry: # optional
+    # Image tag
+    tag: # optional
+    - name: Docker Build and Upload to AWS ECR
+  # You may pin to the exact commit or the version.
+  # uses: vitr/actions-build-and-upload-to-ecs@7e2d171297db18c0013e04944e880b473ba39bed
+  uses: vitr/actions-build-and-upload-to-ecs@v1.0.0
+  with:
+    # The AWS access key id
+    access_key_id: 
+    # The AWS secret access key
+    secret_access_key: 
+    # AWS Account ID
+    account_id: 
+    # Name of your ECR repository
+    repo: 
+    # The AWS region
+    region: 
+    # Set this to true to create the repository if it does not already exist
+    create_repo: # optional
+    # Comma-separated string of ECR image tags
+    tags: # optional, default is latest
+    # Name of Dockerfile to use
+    dockerfile: # optional, default is Dockerfile
+    # Extra flags to pass to docker build (see docs.docker.com/engine/reference/commandline/build)
+    extra_build_args: # optional, default is 
+    # Path to Dockerfile, defaults to the working directory
+    path: # optional, default is .
+   - name: acr-sign-push
+  # You may pin to the exact commit or the version.
+  # uses: dodopizza/acr-sign-push-action@6688de830a974866ae37da84ecf180b5aed8ebaf
+  uses: dodopizza/acr-sign-push-action@0.1.2
+  with:
+    # image tags separated by comma, example: example.azurecr.io/app:latest
+    tags: 
+    # signer key id (hash)
+    signer-key-id: 
+    # signer key content base64 encoded
+    signer-key: 
+    # repository passphrase
+    repository-passphrase:  
+    - name: Deploy to Google Container Registry
+  # You may pin to the exact commit or the version.
+  # uses: castroneto/deploy-to-google-artifactory@97a97b97054b550c27a2872aa11ccb4a19fdea45
+  uses: castroneto/deploy-to-google-artifactory@latest
+  with:
+    # The JSON contents of the Google Cloud Service Account key file
+    credentials_json: 
+    # The name of the Google Cloud project
+    gcp_project: 
+    # The URL of the Google Container Registry
+    gcp_registry: 
+    # The name of the Google Container Registry repository
+    gcp_repository: 
+    # The name of the Docker image
+    image_name: 
+    # The tag of the Docker image
+    image_tag: 
+    - name: Deploy to Caprover
+  # You may pin to the exact commit or the version.
+  # uses: JasirZaeem/caprover-deploy@3b2bb978ce1ddd3708500ff9b032876cf72ca812
+  uses: JasirZaeem/caprover-deploy@v1.2
+  with:
+    # GITHUB_TOKEN
+    token: 
+    # Captain URL for your CapRover server.
+    server: 
+    # Admin password for your CapRover server.
+    password: 
+    # Application name to deploy this repo to, must have been created.
+    app: 
+    - name: docker-ros
+  # You may pin to the exact commit or the version.
+  # uses: ika-rwth-aachen/docker-ros@e7f4ae35d27f67d402de2e689044206cb6c85503
+  uses: ika-rwth-aachen/docker-ros@v1.2.3
+  with:
+    # Target stage of Dockerfile (comma-separated list) [dev|run]
+    target: # optional, default is run
+    # Target platform architecture (comma-separated list) [amd64|arm64|...]
+    platform: # optional
+    # Base image name:tag
+    base-image: 
+    # Launch command of run image (required if target=run)
+    command: # optional
+    # Image name of run image
+    image-name: # optional, default is ghcr.io/${{ github.repository }}
+    # Image tag of run image
+    image-tag: # optional, default is latest
+    # Image name of dev image
+    dev-image-name: # optional
+    # Image tag of dev image
+    dev-image-tag: # optional
+    # Build context of Docker build process
+    build-context: # optional, default is ${{ github.workspace }}
+    # Docker registry to push images to
+    registry: # optional, default is ghcr.io
+    # Docker registry username
+    registry-user: # optional, default is ${{ github.actor }}
+    # Docker registry password
+    registry-password: # optional, default is ${{ github.token }}
+    # ROS Distro (required if ROS is not installed in `base-image`)
+    ros-distro: # optional
+    # Server URL (without protocol) for cloning private Git repositories via HTTPS
+    git-https-server: # optional, default is github.com
+    # Username for cloning private Git repositories via HTTPS
+    git-https-user: # optional, default is ${{ github.actor }}
+    # Password for cloning private Git repositories via HTTPS
+    git-https-password: # optional, default is ${{ github.token }}
+    # SSH private key for cloning private Git repositories via SSH
+    git-ssh-private-key: # optional
+    # Known SSH host keys for cloning private Git repositories via SSH (may be obtained using `ssh-keyscan`)
+    git-ssh-known-host-keys: # optional
+    # Relative filepath to file containing additional apt deb packages to install
+    additional-debs-file: # optional, default is docker/additional-debs.txt
+    # Enable recursive discovery of files named `additional-debs-file`
+    enable-recursive-additional-debs: # optional
+    # Relative path to directory containing additional files to copy into image
+    additional-files-dir: # optional, default is docker/additional-files
+    # Relative filepath to file containing additional pip packages to install
+    additional-pip-file: # optional, default is docker/additional-pip-requirements.txt
+    # Enable recursive discovery of files named `additional-pip-file`
+    enable-recursive-additional-pip: # optional
+    # Relative filepath to script containing custom installation commands
+    custom-script-file: # optional, default is docker/custom.sh
+    # Enable recursive discovery of files named `custom-script-file`
+    enable-recursive-custom-script: # optional
+    # Enable industrial_ci
+    enable-industrial-ci: # optional
+    # Enable push of single arch images with [-amd64|-arm64] postfix
+    enable-singlearch-push: # optional
+    # Push images with tag `latest`/`latest-dev` in addition to the configured image names
+    enable-push-as-latest: # optional
+    - name: AWS ECR EKS
+  # You may pin to the exact commit or the version.
+  # uses: observian/littleci-littlecd-eks@61b6db8fdabf5a9246c50781facb0b05bd78cbaf
+  uses: observian/littleci-littlecd-eks@0.1.1.6
+  with:
+    # The AWS access key id
+    access_key_id: 
+    # The AWS secret access key
+    secret_access_key: 
+    # AWS Account ID
+    account_id: 
+    # Name of your ECR repository
+    repo: 
+    # The AWS region
+    region: 
+    # the name of the eks cluster to which this image should be pushed
+    eks_cluster_name: 
+    # Comma-separated string of ECR image tags
+    tags: # optional, default is latest
+    # comma separated key-value pairs of build arguments to be passed to the docker build
+    build-args: # optional
+    # Name of Dockerfile to use
+    dockerfile: # optional, default is Dockerfile
+    # Path to Dockerfile, defaults to the working directory
+    path: # optional, default is .
+    # manifest containing IMAGE_TAG placeholder to apply to the cluster
+    k8s_manifest: 
+    # the tag for hte k8s manifest to use when it references the repo.
+    k8s_image_tag: 
+    - name: Setup Supabase CLI
+  # You may pin to the exact commit or the version.
+  # uses: bickoSiTiEff/setup-supabase-action@1ac3ad2fbbb08fec341739149010056c4d1bd067
+  uses: bickoSiTiEff/setup-supabase-action@v1.1.0
+  with:
+    # Release of Supabase CLI to install
+    version: 
+    # Architecture of the binary to download
+    architecture: # optional, default is amd64
+    # Image registry which should be used for downloading the docker images. GitHub container registry is used per default for faster pulls in GH Action CI runs. Specify an empty string to use the CLI default of AWS ECR. Alternatively you can also specify "docker.io".
+    image-registry: # optional, default is ghcr.io
+    # Whether to use actions/cache for caching the supabase binary
+    enable-binary-cache: # optional, default is true
+    # Whether to use actions/cache for caching downloaded docker images
+    enable-docker-cache: # optional, default is false
+    - name: gcr-add-version-tags
+  # You may pin to the exact commit or the version.
+  # uses: jacobsvante/gcr-add-version-tags-action@620ffcf94da0047f150e6ed24196e52135029b1c
+  uses: jacobsvante/gcr-add-version-tags-action@v0.1.0
+  with:
+    # The docker repository e.g. `eu.gcr.io/project-12345/image-name`
+    repository: 
+    # The pre-existing tag to point to
+    source-tag: 
+    # The major version identifier to use in the tag
+    major: 
+    # The minor version identifier to use in the tag
+    minor: 
+    # The patch version identifier to use in the tag
+    patch: 
+    # Also set source tag as `latest`
+    push-latest: 
+    - name: Keel Webhook
+  # You may pin to the exact commit or the version.
+  # uses: rkusa/keel-webhook-action@66a977c642c8d4b6b211a5db2babafb2367ea08b
+  uses: rkusa/keel-webhook-action@1.0.0
+  - name: docker-build-push-gcr-update-gke-deployment-action
+  # You may pin to the exact commit or the version.
+  # uses: budtendr/docker-build-push-gcr-update-gke-deployment-action@a3c865ea7eeddc9aa68921cf6e7bff13d6cb5d6a
+  uses: budtendr/docker-build-push-gcr-update-gke-deployment-action@1.4
+  with:
+    # Base64 encoded service account JSON from GCP IAM service account
+    service_account: 
+    # Cluster Zone
+    zone: 
+    # Project ID from GCP
+    project_id: 
+    # GCR registry host, It could be gcr.io/us.gcr.io/eu.gcr.io/asia.gcr.io
+    registry: # default is gcr.io
+    # Name of the image
+    image_name: 
+    # Name of GKE cluster
+    cluster: 
+    # Namespace of the deployment
+    namespace: # default is default
+    # Name of the deployment which needs to be update
+    deployment: 
+    # Name of container whose image needs to be updated
+    container: 
+  - name: Push to ECR China
+  # You may pin to the exact commit or the version.
+  # uses: haohaowasky/AWS_ACTION_ECR_CHINA@49889220dd2ab9fe289c96194997688ba5849110
+  uses: haohaowasky/AWS_ACTION_ECR_CHINA@v2
+  with:
+    # The AWS access key id
+    access_key_id: 
+    # The AWS secret access key
+    secret_access_key: 
+    # AWS Account ID
+    account_id: 
+    # A role to assume under the account_id account.
+    assume_role: # optional, default is 
+    # Name of your ECR repository
+    repo: 
+    # The AWS region
+    region: 
+    # Set this to true to create the repository if it does not already exist
+    create_repo: # optional
+    # Comma-separated string of ECR image tags
+    tags: # optional, default is latest
+    # Name of Dockerfile to use
+    dockerfile: # optional, default is Dockerfile
+    # Extra flags to pass to docker build (see docs.docker.com/engine/reference/commandline/build)
+    extra_build_args: # optional, default is 
+    # Path to Dockerfile, defaults to the working directory
+    path: # optional, default is . 
+    - name: Deploy containers
+  # You may pin to the exact commit or the version.
+  # uses: iacobfred/deploy-docker-ssh@3e0b33d6b88aefb6738cb1fe46decba6bde2b5b7
+  uses: iacobfred/deploy-docker-ssh@v0.4.9
+  with:
+    # The host name or IP address of the server to which this action will connect via SSH to deploy the image.
+    host: 
+    # The username to use when connecting to the server via SSH
+    user: 
+    # A space-delimited list of filepaths (relative to `source-dir`) to be transferred/synced to the server (e.g., 'docker-compose.yml')
+    files: # optional, default is 
+    # The directory within the repository that contains the files to be transferred/synced to the server.
+    source-dir: # optional, default is .
+    # The absolute filepath of the directory to which necessary files (e.g., docker-compose.yml) will be transferred/synced on the server
+    target-dir: 
+    # The SSH port (e.g., 22) to use for connecting to the server
+    ssh-port: # optional, default is 22
+    # The private key generated on the server, used to authenticate the SSH connection
+    ssh-private-key: 
+    # The command to run on the server to deploy the container
+    command: 
+    - name: build-push-github-action
+  # You may pin to the exact commit or the version.
+  # uses: flamestro/build-push-github-action@45de68b8ff071b3921847e12a0b40b1b95af021b
+  uses: flamestro/build-push-github-action@v1.4.2
+  with:
+    # Authentication Token
+    token: 
+    # ghcr username
+    username: # default is ${{ github.actor }}
+    - name: Runs the given gcloud command
+  # You may pin to the exact commit or the version.
+  # uses: Adzz/deploy_to_gae_action@71c1453ba77a9001656b727f542103d49c6fcef4
+  uses: Adzz/deploy_to_gae_action@v1.1
+  with:
+    # The file with the service account credentials in.
+    credentials: 
+    # The name of the project you want to do stuff in.
+    project: 
+    # The command you wish to run e.g. deploy.
+    command: 
+    - name: Godot Headless Build
+  # You may pin to the exact commit or the version.
+  # uses: robpc/godot-export-action@22c003d724761b3923dd0b918e5e230e23917cc5
+  uses: robpc/godot-export-action@v4.0.2-0
+  with:
+    # name of the export preset
+    preset: 
+    # export path for the executable
+    export_path: 
+    # Directory of the project if not the root
+    project_directory: # optional
+    # Directory containing the project.godot file if not the project_dir
+    projectfile_directory: # optional
+    - name: Choreo Deployer
+  # You may pin to the exact commit or the version.
+  # uses: choreo-templates/build-deploy-action@f68c1423f96092aaecd9bd4ca49bee1aa6a3365d
+  uses: choreo-templates/build-deploy-action@1.0.9
+  with:
+    # Choreo API Domain.
+    domain: # optional, default is 
+    # Organization ID
+    org-id: # default is 0
+    # Project ID
+    project-id: # default is 
+    # App ID
+    app-id: # default is 
+    # Environment ID
+    env-id: # default is 
+    # Version ID
+    version: # default is 
+    # Branch
+    branch: # optional, default is main
+    # Name of the image
+    image-name: # default is 
+    # Name of the built tag
+    git-hash: # default is latest
+    # Name of the built tag of gitops repo
+    gitops-hash: # default is latest
+    # Secret token for validation
+    token: # default is 
+    # Deploymnet yaml file path to extract ports
+    port-extract-file-path: # default is target/kubernetes/workspace/workspace.yaml
+    # Enable request debug
+    debug: # optional
+    # Status of the http based app
+    is-http-based: # optional
+    # Oas file path
+    oas-file-path: # optional, default is 
+   - name: Build Action Server image
+  # You may pin to the exact commit or the version.
+  # uses: RasaHQ/rasa-action-server-gha@7f0554774c5825cd27f389061d9a1eab1be7f2d3
+  uses: RasaHQ/rasa-action-server-gha@v1.0.3
+  with:
+    # Path to the directory with actions.
+    actions_directory: # optional, default is ${{ github.workspace }}/actions
+    # Path to the requirements.txt file.
+    requirements_file: # optional
+    # Name of the docker registry which the Docker image should be published to.
+    docker_registry: # optional, default is docker.io
+    # Login name for the Docker registry.
+    docker_registry_login: 
+    # Password for the Docker registry.
+    docker_registry_password: 
+    # Docker image name.
+    docker_image_name: # optional, default is action_server
+    # Docker image tag.
+    docker_image_tag: # optional, default is ${{ github.run_id }}
+    # Push a docker image to the registry. If `False` the user can add manual extra steps in their workflow which use the built image.
+    docker_registry_push: # optional, default is true
+    # Path to a custom Dockerfile.
+    dockerfile: # optional
+    # Version of the Rasa SDK which should be used to build the image.
+    rasa_sdk_version: # optional, default is latest
+    # List of build-time variables.
+    docker_build_args: # optional
+   - name: Deploy to Northflank
+  # You may pin to the exact commit or the version.
+  # uses: northflank/deploy-to-northflank@179263ef163e3bb475626feee7158f609fba5ee5
+  uses: northflank/deploy-to-northflank@v1.0.0
+  with:
+    # Host of the Northflank API.
+    northflank-api-host: # optional, default is https://api.northflank.com
+    # API key to use to authenticate with the Northflank API.
+    northflank-api-key: 
+    # ID of the project the service or job to deploy to belongs to.
+    project-id: 
+    # ID of the service to deploy to.
+    service-id: # optional
+    # ID of the job to deploy to.
+    job-id: # optional
+    # Path of the Docker image to deploy.
+    image-path: 
+    # ID of the registry credentials to use to access the Docker image.
+    credentials-id: # optional
+  - name: Octopus Deploy Release Action
+  # You may pin to the exact commit or the version.
+  # uses: ricado-group/octopus-deploy-release-action@d99c3b9cc7842cfe1be9c52c6b29bdc104481ee6
+  uses: ricado-group/octopus-deploy-release-action@v1.1
+  with:
+    # The URI of your Octopus Deploy Instance
+    server: 
+    # The API Key used to Authenticate with Octopus Deploy
+    apikey: 
+    # The Name of the Project for this new Release
+    project: 
+    # The Version for this Release
+    version: 
+    # Release Notes for this Release
+    releaseNotes: # optional, default is 
+- name: build-docker-and-deploy-to-caprover
+  # You may pin to the exact commit or the version.
+  # uses: adamghill/build-docker-and-deploy-to-caprover@0b549d553de0bd8a4933243a95b5ee903968626f
+  uses: adamghill/build-docker-and-deploy-to-caprover@v1
+  with:
+    # The name of the CapRover application
+    caprover-app-name: 
+    # The GitHub personal access token
+    github-token: 
+    # The CapRover server URL
+    caprover-server-url: 
+    # The CapRover app token
+    caprover-app-token: 
+    # The name of the branch to deploy
+    branch-name: # optional, default is ${{ github.ref_name || github.head_ref }}
+    # The name of the Docker file to build
+    docker-file-name: # optional, default is ./Dockerfile
+    # The URL of the Docker registry
+    docker-registry: # optional, default is ghcr.io
+   - name: build-push-github-action
+  # You may pin to the exact commit or the version.
+  # uses: flamestro/build-push-github-action@45de68b8ff071b3921847e12a0b40b1b95af021b
+  uses: flamestro/build-push-github-action@v1.4.2
+  with:
+    # Authentication Token
+    token: 
+    # ghcr username
+    username: # default is ${{ github.actor }}
+   - name: Deploy Docker to Caprover
+  # You may pin to the exact commit or the version.
+  # uses: ariaieboy/caprover-deploy@fb1ba58e64b6acb11f2fa54502d9a80cbc57196b
+  uses: ariaieboy/caprover-deploy@1.2.2
+  with:
+    # GITHUB_TOKEN
+    token: 
+    # Captain URL for your CapRover server.
+    server: 
+    # Admin password for your CapRover server.
+    password: 
+    # Application name to deploy this repo to, must have been created.
+    app: 
+   - name: build-push-github-action
+  # You may pin to the exact commit or the version.
+  # uses: flamestro/build-push-github-action@45de68b8ff071b3921847e12a0b40b1b95af021b
+  uses: flamestro/build-push-github-action@v1.4.2
+  with:
+    # Authentication Token
+    token: 
+    # ghcr username
+    username: # default is ${{ github.actor }}
+  - name: Action - rsync
+  # You may pin to the exact commit or the version.
+  # uses: up9cloud/action-rsync@4aad3e11ee933f8a8e6e1002552707e6474ab76a
+  uses: up9cloud/action-rsync@v1.3
+  - name: AWS ECR IMAGE UPLOAD WITH REPO AND POLICY
+  # You may pin to the exact commit or the version.
+  # uses: smu-chile/aws-ecr-policy-action@4305d35c19d598ba401b461c0b3b5c1ebdd158cf
+  uses: smu-chile/aws-ecr-policy-action@V.1.2
+  with:
+    # The AWS access key id
+    access_key_id: 
+    # The AWS secret access key
+    secret_access_key: 
+    # The AWS ECR Registry
+    ecr_registry: 
+    # Name of your ECR repository
+    repo: 
+    # The AWS region
+    region: # default is us-east-1
+    # Set this to true to create the repository if it does not already exist
+    create_repo: # optional, default is true
+    # Set this to true to create the repository if it does not already exist
+    create_policy: # optional, default is true
+    # Comma-separated string of ECR image tags
+    tags: # optional, default is latest
+    # Set this to true so you allow the repository to scan newly upload images
+    scan_images: # optional, default is true
+    # Name of Dockerfile to use
+    dockerfile: # optional, default is Dockerfile
+    # Extra flags to pass to docker build (see docs.docker.com/engine/reference/commandline/build)
+    extra_build_args: # optional, default is 
+    # Path to Dockerfile, defaults to the working directory
+    path: # optional, default is .
+    # Description of the policies and the amount of images to keep.
+    ecr_policies: # optional, default is any:5
+    # Relative path from top-level to script to run before Docker build
+    prebuild_script: # optional
+    # Builds or just upload a previously build image
+    behavior: # default is build
+    # Builds or just upload a previously build image
+    image_name: # optional
+    - name: werf
+  # You may pin to the exact commit or the version.
+  # uses: werf/actions@e5e6d49cdd9029348d3f34519996bae8d3f7cee8
+  uses: werf/actions@marketplace
+  with:
+    # The one of the following channel: alpha, beta, ea, stable, rock-solid
+    channel: # optional, default is alpha
+    # The certain version
+    version: # optional
+    # Specific deployment environment
+    env: 
+    # The GitHub token used to login and to interact with Docker Github Packages
+    github-token: # optional, default is ${{ github.token }}
+    # Base64 encoded kubeconfig data used for deployment, cleanup and distributed locks
+    kube-config-base64-data: # optional
+    - name: Git SHA Trimmer
+  # You may pin to the exact commit or the version.
+  # uses: priyesh2609/sha-trim-action@9b3455de8dc5c595746cf34d653bf81854b9f7e2
+  uses: priyesh2609/sha-trim-action@v1.1.1
+  with:
+    # Desired length of git SHA to trim with from the beginning
+    sha-length: # default is 7
+    # Prefix the trimmed SHA with
+    prefix: # optional, default is 
+    # Character to separate prefix with trimmed SHA
+    join-by: # optional, default is 
+    - name: Update latest Docker tag
+  # You may pin to the exact commit or the version.
+  # uses: silverlyra/latest-image-action@1c26714606cb7730d8c056c2bb508aaf98bea494
+  uses: silverlyra/latest-image-action@v0.1.0
+  with:
+    # Docker image repository to check and update. To update multiple repos, pass a multiline string.
+    repository: 
+    # The newly-pushed image tag that possibly should be promoted to latest
+    candidate-tag: 
+    # The image tag to check and possibly update
+    latest-tag: # default is latest
+    # Read an image's version from a label (label:...) or environment variable (env:...)
+    version-source: # default is label:org.opencontainers.image.version
+    # Allow prerelease versions to replace non-prerelease latest
+    promote-prerelease: # optional, default is false
+    # Coerce detected version values to semver
+    coerce-semver: # optional, default is false
+    # Read the current version from the container config of this platform in a multi-arch index / manifest list
+    manifest-platform: # optional, default is linux/amd64- name: Update latest Docker tag
+  # You may pin to the exact commit or the version.
+  # uses: silverlyra/latest-image-action@1c26714606cb7730d8c056c2bb508aaf98bea494
+  uses: silverlyra/latest-image-action@v0.1.0
+  with:
+    # Docker image repository to check and update. To update multiple repos, pass a multiline string.
+    repository: 
+    # The newly-pushed image tag that possibly should be promoted to latest
+    candidate-tag: 
+    # The image tag to check and possibly update
+    latest-tag: # default is latest
+    # Read an image's version from a label (label:...) or environment variable (env:...)
+    version-source: # default is label:org.opencontainers.image.version
+    # Allow prerelease versions to replace non-prerelease latest
+    promote-prerelease: # optional, default is false
+    # Coerce detected version values to semver
+    coerce-semver: # optional, default is false
+    # Read the current version from the container config of this platform in a multi-arch index / manifest list
+    manifest-platform: # optional, default is linux/amd64
+    - name: Runs the given gcloud command
+  # You may pin to the exact commit or the version.
+  # uses: Adzz/deploy_to_gae_action@71c1453ba77a9001656b727f542103d49c6fcef4
+  uses: Adzz/deploy_to_gae_action@v1.1
+  with:
+    # The file with the service account credentials in.
+    credentials: 
+    # The name of the project you want to do stuff in.
+    project: 
+    # The command you wish to run e.g. deploy.
+    command: 
