@@ -1,5 +1,5 @@
 # Container image that runs your code
-FROM alpine:3.10
+FROM alpine:3.19.4
 
 # Install curl
 RUN apk add --no-cache curl
